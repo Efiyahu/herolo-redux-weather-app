@@ -2,7 +2,7 @@ const initialState = {
   location: [],
   favorites: [],
   loading: false,
-  currentCity: null,
+  currentCity: [],
   error: null,
 };
 
@@ -33,7 +33,7 @@ const weatherReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
-        currentCity: null,
+        currentCity: [],
         error: null,
       };
     case 'SELECT_CITY_SUCCESS':
@@ -46,7 +46,29 @@ const weatherReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        currentCity: null,
+        currentCity: [],
+        error: action.payload,
+      };
+
+    case 'DISPLAY_FIVE_DAY_PENDING':
+      return {
+        ...state,
+        loading: true,
+        fiveDayInfo: [],
+        error: null,
+      };
+    case 'DISPLAY_FIVE_DAY_SUCCESS':
+      return {
+        ...state,
+        loading: false,
+        fiveDayInfo: action.payload,
+        error: null,
+      };
+    case 'DISPLAY_FIVE_DAY_ERROR':
+      return {
+        ...state,
+        loading: false,
+        fiveDayInfo: [],
         error: action.payload,
       };
 

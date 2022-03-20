@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 
 function WeatherDisplay({ cityInfo }) {
   const state = useSelector((state) => state);
+
   return (
     <div className={classes.container}>
       <div className={classes['container-header']}>
@@ -15,11 +16,16 @@ function WeatherDisplay({ cityInfo }) {
             <img src={Rain} alt="rain" />
           </div>
           <div>
-            <h2>{cityInfo.city}</h2>
-            <h2>
+            <h3 className={classes.text}>{cityInfo.city}</h3>
+            <h3 className={classes.text}>
               {cityInfo.state} - {cityInfo.country}
-            </h2>
-            <h4>38&#176; c</h4>
+            </h3>
+            <h5 className={classes['sub-text']}>
+              {state.currentCity.length > 0 && state.currentCity[0].WeatherText}{' '}
+              {state.currentCity.length > 0 &&
+                state.currentCity[0].Temperature.Metric.Value}
+              &#176; c
+            </h5>
           </div>
         </div>
         {/* right side to add to favorite */}
