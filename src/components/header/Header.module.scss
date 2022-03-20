@@ -1,0 +1,38 @@
+@import '../../utils/variables.scss';
+
+.header {
+  width: 100%;
+  height: 80px;
+  background-color: $main-color-dark;
+  color: $main-color-light;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .title {
+    margin-left: 1rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+  }
+
+  .links {
+    margin: 0 2rem;
+    width: 30%;
+    display: flex;
+
+    .link {
+      margin: 0 1rem;
+      color: inherit;
+      text-decoration: none;
+      padding: 0.9rem 2rem;
+      border-radius: 40px;
+      font-weight: bolder;
+      transition: all 0.5s;
+      display: flex;
+
+      &:hover {
+        background-color: $main-color;
+      }
+    }
+  }
+}
