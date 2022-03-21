@@ -9,26 +9,40 @@
     left: 50%;
     top: 13%;
     transform: translate(-50%, -20%);
-    background-color: $main-color-dark;
     height: 40px;
     border-radius: 40px;
     padding: 10px;
+
+    &.dark {
+      background-color: $main-color-dark;
+    }
+    &.light {
+      background-color: $main-color-light;
+    }
 
     &:hover > .search-txt {
       width: 240px;
       padding: 0 6px;
     }
     .search-btn {
-      color: $main-color;
       border: none;
       float: right;
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background-color: $main-color-dark;
       display: flex;
       justify-content: center;
       align-items: center;
+      cursor: pointer;
+
+      &.dark {
+        background-color: $main-color-dark;
+        color: $main-color;
+      }
+      &.light {
+        background-color: $main-color-light;
+        color: $secondary-color;
+      }
     }
 
     .search-txt {
@@ -37,11 +51,17 @@
       outline: none;
       float: left;
       padding: 0;
-      color: white;
       font-size: 16px;
       transition: all 0.4s;
       line-height: 40px;
       width: 0px;
+
+      &.dark {
+        color: $main-color-light-2;
+      }
+      &.light {
+        color: $main-color-dark-2;
+      }
     }
   }
 }

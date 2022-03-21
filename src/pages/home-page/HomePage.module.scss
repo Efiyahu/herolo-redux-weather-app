@@ -2,34 +2,17 @@
 
 .main {
   width: 100%;
-  height: calc(100vh - 80px);
-  background-color: $main-color-dark-2;
-  color: $main-color-light;
+  min-height: calc(100vh - 80px);
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  .countries {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-    width: 90%;
-
-    .country {
-      margin-left: 1rem;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      font-size: 0.7rem;
-      text-align: center;
-
-      background-color: $main-color-dark;
-      cursor: pointer;
-      transition: all 0.2s;
-
-      &:hover {
-        background-color: $main-color;
-      }
-    }
+  &.dark {
+    background-color: $main-color-dark-2;
+    color: $main-color-light;
+  }
+  &.light {
+    background-color: $main-color-light-2;
+    color: $main-color-dark-2;
   }
 }

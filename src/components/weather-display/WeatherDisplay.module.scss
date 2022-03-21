@@ -1,13 +1,62 @@
 @import '../../utils/variables.scss';
 
+.countries {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  width: 90%;
+
+  .country {
+    margin-left: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    text-align: center;
+
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &.dark {
+      background-color: $main-color-dark;
+      &:hover {
+        background-color: $main-color;
+      }
+    }
+    &.light {
+      background-color: $main-color-light;
+      &:hover {
+        background-color: $secondary-color;
+      }
+    }
+  }
+}
 .container {
-  width: 80%;
-  height: 65%;
-  background-color: $main-color-dark;
+  width: 95%;
+  min-height: 600px;
+  background-size: cover;
   cursor: default;
   border-radius: 10px;
   box-shadow: 2px 8px 21px 5px rgba(0, 0, 0, 0.75);
   transition: all 0.2s;
+  margin: 3rem 0;
+
+  &.dark {
+    background-image: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.9),
+        rgba(29, 29, 29, 0.9)
+      ),
+      url('../../assets/weather.jpg');
+  }
+  &.light {
+    background-image: linear-gradient(
+        to right,
+        rgba($main-color-light, 0.6),
+        rgba($main-color-light-2, 0.6)
+      ),
+      url('../../assets/weather.jpg');
+  }
 
   &:hover {
     transform: scale(1.005);
@@ -42,20 +91,31 @@
       margin: 2rem 3rem;
 
       .favorite {
+        display: flex;
+        width: 200px;
+        align-items: center;
+        justify-content: space-between;
         .btn {
           padding: 0.9rem 2rem;
           font-size: 0.8rem;
           font-weight: bolder;
           color: inherit;
-          background-color: $main-color;
+          background-color: transparent;
           border: none;
           border-radius: 30px;
           cursor: pointer;
           transition: all 0.5s;
           box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.75);
 
-          &:hover {
-            background-color: $main-color-lighter;
+          &.dark {
+            &:hover {
+              background-color: $main-color;
+            }
+          }
+          &.light {
+            &:hover {
+              background-color: $secondary-color;
+            }
           }
 
           &:active {

@@ -5,7 +5,7 @@ export const searchWeather = (input) => {
 
     try {
       const response = await fetch(
-        `http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=%09tifBSVtKNWx7qdSGbrZsi6usHmoijA2q&q=${input}`
+        `http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=eyrod3oWoFd8F1kLbA50y3tj24ZHWO7S&q=${input}`
       );
 
       if (!response.ok) {
@@ -13,8 +13,9 @@ export const searchWeather = (input) => {
       }
 
       const data = await response.json();
-
       dispatch({ type: 'SEARCH_CITY_SUCCESS', payload: data });
+
+      return dispatch(selectCity(data[0].Key));
     } catch (error) {
       dispatch({ type: 'SEARCH_CITY_ERROR', payload: error });
     }
@@ -29,13 +30,15 @@ export const selectCity = (cityKey) => {
 
     try {
       const response = await fetch(
-        `http://dataservice.accuweather.com/currentconditions/v1/${cityKey}?apikey=%09tifBSVtKNWx7qdSGbrZsi6usHmoijA2q&details=true`
+        `http://dataservice.accuweather.com/currentconditions/v1/${cityKey}?apikey=eyrod3oWoFd8F1kLbA50y3tj24ZHWO7S&details=true`
       );
 
       if (!response.ok) throw new Error();
 
       const data = await response.json();
       dispatch({ type: 'SELECT_CITY_SUCCESS', payload: data });
+
+      return dispatch(displayFiveDayInfo(cityKey));
     } catch (error) {
       dispatch({ type: 'SELECT_CITY_ERROR', payload: error });
     }
@@ -50,13 +53,43 @@ export const displayFiveDayInfo = (cityKey) => {
 
     try {
       const response = await fetch(
-        `http://dataservice.accuweather.com/forecasts/v1/daily/5day/${cityKey}?apikey=tifBSVtKNWx7qdSGbrZsi6usHmoijA2q&metric=true`
+        `http://dataservice.accuweather.com/forecasts/v1/daily/5day/${cityKey}?apikey=eyrod3oWoFd8F1kLbA50y3tj24ZHWO7S&metric=true`
       );
 
       const data = await response.json();
-      dispatch({ type: 'DISPLAY_FIVE_DAY_SUCCESS', payload: data });
+      dispatch({
+        type: 'DISPLAY_FIVE_DAY_SUCCESS',
+        payload: data.DailyForecasts,
+      });
     } catch (error) {
       dispatch({ type: 'DISPLAY_FIVE_DAY_ERROR', payload: error });
+    }
+  };
+};
+
+// fetch the default city from Geolocation API
+export const fetchGeolocationCity = (lat, lng) => {
+  return async (dispatch, getState) => {
+    dispatch({ type: 'SEARCH_BY_GEO_PENDING' });
+
+    try {
+      const response = await fetch(
+        `http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=%09eyrod3oWoFd8F1kLbA50y3tj24ZHWO7S&q=${lat}%2C${lng}`
+      );
+
+      if (!response.ok) {
+        throw new Error();
+      }
+
+      const data = await response.json();
+      dispatch({
+        type: 'SEARCH_BY_GEO_SUCCESS',
+        payload: data,
+      });
+      return dispatch(selectCity(data.Key));
+    } catch (error) {
+      dispatch({ type: 'SEARCH_BY_GEO_ERROR', payload: error });
+      console.log(error.message);
     }
   };
 };

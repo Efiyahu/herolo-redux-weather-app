@@ -3,11 +3,18 @@
 .header {
   width: 100%;
   height: 80px;
-  background-color: $main-color-dark;
-  color: $main-color-light;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  &.dark {
+    background-color: $main-color-dark;
+    color: $main-color-light;
+  }
+  &.light {
+    background-color: $main-color-light;
+    color: $main-color-dark;
+  }
 
   .title {
     margin-left: 1rem;
@@ -30,8 +37,16 @@
       transition: all 0.5s;
       display: flex;
 
-      &:hover {
-        background-color: $main-color;
+      &.dark {
+        &:hover {
+          background-color: $main-color;
+        }
+      }
+
+      &.light {
+        &:hover {
+          background-color: $secondary-color;
+        }
       }
     }
   }
