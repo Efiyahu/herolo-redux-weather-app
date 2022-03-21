@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import { createContext } from 'react/cjs/react.production.min';
+import React, { useState, createContext } from 'react';
 
 const ThemeContext = createContext();
 
 export const ThemeContextProvider = ({ children }) => {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState(false);
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>

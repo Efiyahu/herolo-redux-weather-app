@@ -9,6 +9,7 @@ import WeatherDisplay from '../../components/weather-display/WeatherDisplay';
 import { fetchGeolocationCity } from '../../store/weater-actions';
 import { ClipLoader } from 'react-spinners';
 import ThemeContext from '../../context/theme-context';
+import { toast } from 'react-toastify';
 
 function HomePage() {
   const { theme } = useContext(ThemeContext);
@@ -33,7 +34,9 @@ function HomePage() {
     };
 
     const errorCallback = () => {
-      console.log('error getting position');
+      toast.error(
+        'Could not get current Geolocation information, (allow using location in browser settings)'
+      );
     };
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
 
@@ -45,14 +48,14 @@ function HomePage() {
   // choose which city to display
 
   return (
-    <main
-      className={`${classes.main} ${
-        theme === 'dark' ? classes.dark : classes.light
-      }`}
-    >
+    <main className={`${classes.main} ${theme ? classes.dark : classes.light}`}>
       <Search />
       {state.loading && (
-        <ClipLoader color={'crimson'} loading={state.loading} size={150} />
+        <ClipLoader
+          color={theme ? 'crimson' : 'yellowgreen'}
+          loading={state.loading}
+          size={150}
+        />
       )}
       <WeatherDisplay />
     </main>

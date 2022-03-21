@@ -1,0 +1,62 @@
+@import '../../utils/variables.scss';
+
+.container {
+  display: flex;
+  align-items: center;
+
+  h5 {
+    cursor: default;
+  }
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+    margin: 0 10px;
+
+    @media (max-width: 600px) {
+      width: 40px;
+      height: 20px;
+    }
+
+    & input {
+      display: none;
+    }
+
+    input:checked + .slider {
+      background-color: $main-color;
+    }
+    input:checked + .slider::before {
+      transform: translateX(100%);
+
+      @media (max-width: 600px) {
+        transform: translateX(120%);
+      }
+    }
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: all 0.4s;
+    border-radius: 34px;
+
+    &::before {
+      position: absolute;
+      content: '';
+      height: 25px;
+      width: 25px;
+      left: 5px;
+      bottom: 3px;
+      background-color: white;
+      transition: all 0.4s;
+      border-radius: 50px;
+    }
+  }
+}

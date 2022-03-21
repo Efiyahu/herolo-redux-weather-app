@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import TempContext from '../../context/temp-context';
+import ThemeContext from '../../context/theme-context';
 import classes from './Card.module.scss';
 
 function Card({ dayInfo }) {
+  const { theme } = useContext(ThemeContext);
   const date = new Date(dayInfo.Date);
   const day = date.getDay();
   const displayDay = {
@@ -13,14 +16,27 @@ function Card({ dayInfo }) {
     5: 'Friday',
     6: 'Saturday',
   };
+  const { temp } = useContext(TempContext);
+
+  const converToFahrenheit = (value) => {
+    return ((value * 9) / 5 + 32).toFixed(1);
+  };
   return (
-    <div className={classes.card}>
+    <div className={`${classes.card} ${theme ? classes.dark : classes.light}`}>
       <h2 className={classes.title}>{displayDay[day]}</h2>
       <h4 className={classes.subtitle}>
-        Min: {dayInfo.Temperature.Maximum.Value}&#176; c
+        Min:{' '}
+        {temp
+          ? dayInfo.Temperature.Maximum.Value
+          : converToFahrenheit(dayInfo.Temperature.Maximum.Value)}
+        &#176; {temp ? 'C' : 'F'}
       </h4>
       <h4 className={classes.subtitle}>
-        Max: {dayInfo.Temperature.Minimum.Value}&#176; c
+        Max:{' '}
+        {temp
+          ? dayInfo.Temperature.Minimum.Value
+          : converToFahrenheit(dayInfo.Temperature.Minimum.Value)}
+        &#176; {temp ? 'C' : 'F'}
       </h4>
     </div>
   );

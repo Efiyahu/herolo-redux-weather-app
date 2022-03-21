@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 export const searchWeather = (input) => {
   // redux thunk allows us to make async tasks
   return async (dispatch, getState) => {
@@ -18,6 +20,7 @@ export const searchWeather = (input) => {
       return dispatch(selectCity(data[0].Key));
     } catch (error) {
       dispatch({ type: 'SEARCH_CITY_ERROR', payload: error });
+      toast.error('Could not fetch searched city! (check your spelling)');
     }
   };
 };
@@ -41,6 +44,7 @@ export const selectCity = (cityKey) => {
       return dispatch(displayFiveDayInfo(cityKey));
     } catch (error) {
       dispatch({ type: 'SELECT_CITY_ERROR', payload: error });
+      toast.error('Problem accured fetching current city, try again!');
     }
   };
 };
@@ -63,6 +67,7 @@ export const displayFiveDayInfo = (cityKey) => {
       });
     } catch (error) {
       dispatch({ type: 'DISPLAY_FIVE_DAY_ERROR', payload: error });
+      toast.error('Could not show the correct 5-day data, server prolbem!');
     }
   };
 };
@@ -89,7 +94,7 @@ export const fetchGeolocationCity = (lat, lng) => {
       return dispatch(selectCity(data.Key));
     } catch (error) {
       dispatch({ type: 'SEARCH_BY_GEO_ERROR', payload: error });
-      console.log(error.message);
+      toast.error('Could not get current Geolocation information');
     }
   };
 };

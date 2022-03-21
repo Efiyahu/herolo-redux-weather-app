@@ -6,12 +6,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: $main-color-dark;
   opacity: 0.8;
   margin: 0.7rem;
   box-shadow: 0px 10px 21px -4px rgba(0, 0, 0, 0.35);
   border-radius: 20px;
   transition: all 0.5s;
+  &.dark {
+    background-color: $main-color-dark;
+  }
+  &.light {
+    background-color: $main-color-light;
+  }
 
   &:hover {
     transform: scale(1.05);
