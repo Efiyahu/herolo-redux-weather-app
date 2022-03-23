@@ -26,17 +26,17 @@ function Card({ dayInfo }) {
       <h2 className={classes.title}>{displayDay[day]}</h2>
       <h4 className={classes.subtitle}>
         Min:{' '}
-        {temp
+        {!temp
           ? dayInfo.Temperature.Maximum.Value
           : converToFahrenheit(dayInfo.Temperature.Maximum.Value)}
-        &#176; {temp ? 'C' : 'F'}
+        &#176; {temp ? 'F' : 'C'}
       </h4>
       <h4 className={classes.subtitle}>
         Max:{' '}
-        {temp
+        {!temp
           ? dayInfo.Temperature.Minimum.Value
           : converToFahrenheit(dayInfo.Temperature.Minimum.Value)}
-        &#176; {temp ? 'C' : 'F'}
+        &#176; {temp ? 'F' : 'C'}
       </h4>
     </div>
   );

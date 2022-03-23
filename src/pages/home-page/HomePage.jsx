@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import classes from './HomePage.module.scss';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,24 +10,21 @@ import { fetchGeolocationCity } from '../../store/weater-actions';
 import { ClipLoader } from 'react-spinners';
 import ThemeContext from '../../context/theme-context';
 import { toast } from 'react-toastify';
+import GeolocationContext from '../../context/geolocation.context';
 
 function HomePage() {
   const { theme } = useContext(ThemeContext);
   // access store state
+  const { geolocation, setGeolocation, initialLoad, setInitialLoad } =
+    useContext(GeolocationContext);
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
-
-  // to save locally the country and city name
-  const [geo, setGeo] = useState({
-    lat: '',
-    lng: '',
-  });
 
   // get geolocation
 
   useEffect(() => {
     const successCallback = (position) => {
-      setGeo({
+      setGeolocation({
         lat: position.coords.latitude,
         lng: position.coords.longitude,
       });
@@ -39,13 +36,13 @@ function HomePage() {
       );
     };
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-
-    if (geo.lat !== '' && geo.lng !== '') {
-      dispatch(fetchGeolocationCity(geo.lat, geo.lng));
+    if (geolocation.lat !== '' && geolocation.lng !== '' && initialLoad) {
+      dispatch(fetchGeolocationCity(geolocation.lat, geolocation.lng));
+      setInitialLoad(false);
     }
-  }, [geo.lat, geo.lng, dispatch]);
+  }, [geolocation, dispatch, setGeolocation, setInitialLoad, initialLoad]);
 
-  // choose which city to display
+  // // choose which city to display
 
   return (
     <main className={`${classes.main} ${theme ? classes.dark : classes.light}`}>
@@ -54,7 +51,7 @@ function HomePage() {
         <ClipLoader
           color={theme ? 'crimson' : 'yellowgreen'}
           loading={state.loading}
-          size={150}
+          size={100}
         />
       )}
       <WeatherDisplay />

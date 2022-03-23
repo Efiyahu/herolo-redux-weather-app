@@ -1,8 +1,9 @@
 import { toast } from 'react-toastify';
 
+// search cities by input that returns an array of cities
 export const searchWeather = (input) => {
   // redux thunk allows us to make async tasks
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch({ type: 'SEARCH_CITY_PENDING' });
 
     try {
@@ -17,42 +18,60 @@ export const searchWeather = (input) => {
       const data = await response.json();
       dispatch({ type: 'SEARCH_CITY_SUCCESS', payload: data });
 
-      return dispatch(selectCity(data[0].Key));
+      return dispatch(selectCity(data[0]));
     } catch (error) {
       dispatch({ type: 'SEARCH_CITY_ERROR', payload: error });
-      toast.error('Could not fetch searched city! (check your spelling)');
+      toast.error(error.message + ' please enter a valid city name');
     }
   };
 };
 
-export const selectCity = (cityKey) => {
+// select a specific city from the array of cities available to display
+export const selectCity = (city) => {
   // choose a city from the array of locations from the search input
 
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch({ type: 'SELECT_CITY_PENDING' });
 
     try {
       const response = await fetch(
-        `http://dataservice.accuweather.com/currentconditions/v1/${cityKey}?apikey=eyrod3oWoFd8F1kLbA50y3tj24ZHWO7S&details=true`
+        `http://dataservice.accuweather.com/currentconditions/v1/${city.Key}?apikey=eyrod3oWoFd8F1kLbA50y3tj24ZHWO7S&details=true`
       );
 
       if (!response.ok) throw new Error();
 
       const data = await response.json();
-      dispatch({ type: 'SELECT_CITY_SUCCESS', payload: data });
 
-      return dispatch(displayFiveDayInfo(cityKey));
+      // get the relevent info needed
+      const newObject = {
+        cityName: city.LocalizedName,
+        region: city.AdministrativeArea.LocalizedName,
+        country: city.Country.LocalizedName,
+        id: city.Key,
+        currentWeather: data[0].ApparentTemperature.Metric.Value,
+        weatherIcon: data[0].WeatherIcon,
+        weatherText: data[0].WeatherText,
+        isFavorite: false,
+      };
+      // create shallow copy of the data object to add the isFavorite field
+      dispatch({
+        type: 'SELECT_CITY_SUCCESS',
+        payload: [{ ...newObject }],
+      });
+
+      return dispatch(displayFiveDayInfo(newObject.id));
     } catch (error) {
       dispatch({ type: 'SELECT_CITY_ERROR', payload: error });
-      toast.error('Problem accured fetching current city, try again!');
+      toast.error(error.message + ' current city Info');
     }
   };
 };
 
+// get the fiveday forecast info about a specific city
 export const displayFiveDayInfo = (cityKey) => {
   // display the weather info of a selected city in a 5 day forecast
 
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch({ type: 'DISPLAY_FIVE_DAY_PENDING' });
 
     try {
@@ -74,13 +93,15 @@ export const displayFiveDayInfo = (cityKey) => {
 
 // fetch the default city from Geolocation API
 export const fetchGeolocationCity = (lat, lng) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch({ type: 'SEARCH_BY_GEO_PENDING' });
 
     try {
       const response = await fetch(
         `http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=%09eyrod3oWoFd8F1kLbA50y3tj24ZHWO7S&q=${lat}%2C${lng}`
       );
+
+      console.log(response.ok);
 
       if (!response.ok) {
         throw new Error();
@@ -91,10 +112,10 @@ export const fetchGeolocationCity = (lat, lng) => {
         type: 'SEARCH_BY_GEO_SUCCESS',
         payload: data,
       });
-      return dispatch(selectCity(data.Key));
+      return dispatch(selectCity(data));
     } catch (error) {
       dispatch({ type: 'SEARCH_BY_GEO_ERROR', payload: error });
-      toast.error('Could not get current Geolocation information');
+      toast.error(error.message + ' could not get Geolocation Info');
     }
   };
 };

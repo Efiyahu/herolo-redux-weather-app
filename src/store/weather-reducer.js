@@ -1,40 +1,35 @@
 const initialState = {
-  location: [],
+  searchedCities: [],
   favorites: [],
+  visited: [],
   currentCity: [],
-  geoCity: null,
   fiveDayInfo: [],
   loading: false,
   error: null,
 };
 
 const weatherReducer = (state = initialState, action) => {
+  // weather action types
   switch (action.type) {
     case 'SEARCH_CITY_PENDING':
       return {
         ...state,
-        location: [],
         loading: true,
         error: null,
-        geoCity: null,
-        currentCity: [],
       };
     case 'SEARCH_CITY_SUCCESS':
       return {
         ...state,
-        location: action.payload,
+        searchedCities: action.payload,
         loading: false,
         error: null,
-        geoCity: null,
-        currentCity: [],
       };
     case 'SEARCH_CITY_ERROR':
       return {
         ...state,
-        location: [],
+        searchedCities: [],
         loading: false,
         error: action.payload,
-        currentCity: [],
       };
     case 'SELECT_CITY_PENDING':
       return {
@@ -48,6 +43,7 @@ const weatherReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         currentCity: action.payload,
+        visited: [...state.visited, action.payload[0]],
       };
     case 'SELECT_CITY_ERROR':
       return {
@@ -83,20 +79,55 @@ const weatherReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
-        geoCity: null,
       };
     case 'SEARCH_BY_GEO_SUCCESS':
       return {
         ...state,
         loading: false,
-        geoCity: action.payload,
+        searchedCities: [action.payload],
       };
     case 'SEARCH_BY_GEO_ERROR':
       return {
         ...state,
         loading: false,
-        geoCity: null,
         error: action.payload,
+      };
+
+    // sync action types
+    case 'ADD_TO_FAVORITES':
+      // as to not change the state but get a copy of the object
+      const filteredArray = state.visited.filter(
+        (el) => el.id !== action.payload.id
+      );
+
+      const favorite = { ...action.payload, isFavorite: true };
+
+      return {
+        ...state,
+        favorites: [...state.favorites, favorite],
+        visited: [...filteredArray, favorite],
+      };
+
+    case 'REMOVE_FROM_FAVORITES': {
+      const copyObject = { ...action.payload };
+      copyObject.isFavorite = false;
+      const newVisitedArray = state.visited.filter(
+        (el) => el.id !== copyObject.id
+      );
+
+      return {
+        ...state,
+        favorites: state.favorites.filter(
+          (fav) => fav.id !== action.payload.id
+        ),
+        visited: [...newVisitedArray, { ...copyObject }],
+      };
+    }
+
+    case 'SET_CURRENT_CITY':
+      return {
+        ...state,
+        currentCity: [{ ...action.payload }],
       };
 
     default:

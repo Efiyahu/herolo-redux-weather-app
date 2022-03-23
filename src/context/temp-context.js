@@ -3,7 +3,7 @@ import React, { createContext, useState } from 'react';
 const TempContext = createContext();
 
 export const TempContextProvider = ({ children }) => {
-  const [temp, setTemp] = useState(true);
+  const [temp, setTemp] = useState(false);
 
   return (
     <TempContext.Provider value={{ temp, setTemp }}>
