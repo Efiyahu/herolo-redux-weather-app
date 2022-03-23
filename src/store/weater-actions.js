@@ -8,7 +8,7 @@ export const searchWeather = (input) => {
 
     try {
       const response = await fetch(
-        `http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=eyrod3oWoFd8F1kLbA50y3tj24ZHWO7S&q=${input}`
+        `https://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=eyrod3oWoFd8F1kLbA50y3tj24ZHWO7S&q=${input}`
       );
 
       if (!response.ok) {
@@ -35,7 +35,7 @@ export const selectCity = (city) => {
 
     try {
       const response = await fetch(
-        `http://dataservice.accuweather.com/currentconditions/v1/${city.Key}?apikey=eyrod3oWoFd8F1kLbA50y3tj24ZHWO7S&details=true`
+        `https://dataservice.accuweather.com/currentconditions/v1/${city.Key}?apikey=eyrod3oWoFd8F1kLbA50y3tj24ZHWO7S&details=true`
       );
 
       if (!response.ok) throw new Error();
@@ -76,7 +76,7 @@ export const displayFiveDayInfo = (cityKey) => {
 
     try {
       const response = await fetch(
-        `http://dataservice.accuweather.com/forecasts/v1/daily/5day/${cityKey}?apikey=eyrod3oWoFd8F1kLbA50y3tj24ZHWO7S&metric=true`
+        `https://dataservice.accuweather.com/forecasts/v1/daily/5day/${cityKey}?apikey=eyrod3oWoFd8F1kLbA50y3tj24ZHWO7S&metric=true`
       );
 
       const data = await response.json();
@@ -98,7 +98,7 @@ export const fetchGeolocationCity = (lat, lng) => {
 
     try {
       const response = await fetch(
-        `http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=%09eyrod3oWoFd8F1kLbA50y3tj24ZHWO7S&q=${lat}%2C${lng}`
+        `https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=%09eyrod3oWoFd8F1kLbA50y3tj24ZHWO7S&q=${lat}%2C${lng}`
       );
 
       console.log(response.ok);
