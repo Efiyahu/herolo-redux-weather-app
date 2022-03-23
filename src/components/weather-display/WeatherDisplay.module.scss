@@ -109,6 +109,11 @@
         width: 200px;
         align-items: center;
         justify-content: space-between;
+
+        @media (max-width: 600px) {
+          width: 100%;
+          justify-content: center;
+        }
         .btn {
           padding: 0.9rem 2rem;
           font-size: 0.7rem;
@@ -120,6 +125,10 @@
           cursor: pointer;
           transition: all 0.5s;
           box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.75);
+
+          @media (max-width: 600px) {
+            margin-left: 1rem;
+          }
 
           &.dark {
             &:hover {

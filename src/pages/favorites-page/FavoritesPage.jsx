@@ -44,6 +44,7 @@ function FavoritesPage() {
                   <h5>{favorite.country}</h5>
                   <h4 style={{ marginTop: '.2rem' }}>{favorite.weatherText}</h4>
                 </div>
+                <div></div>
                 <h4>
                   {!temp
                     ? favorite.currentWeather

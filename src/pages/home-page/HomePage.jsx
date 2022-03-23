@@ -31,9 +31,12 @@ function HomePage() {
     };
 
     const errorCallback = () => {
-      toast.error(
-        'Could not get current Geolocation information, (allow using location in browser settings)'
-      );
+      if (initialLoad) {
+        toast.error(
+          'Could not get current Geolocation information, (allow using location in browser settings)'
+        );
+        setInitialLoad(false);
+      }
     };
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
     if (geolocation.lat !== '' && geolocation.lng !== '' && initialLoad) {
